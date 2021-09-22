@@ -34,28 +34,28 @@ func main() {
 		} `command:"submit" description:"Submit solution"`
 		Login struct{} `command:"login" description:"Login to TSWeb and remember credentials"`
 	}{}
-	gocmd.HandleFlag("Local.Show", func(gcmd *gocmd.Cmd, args []string) error {
+	_, _ = gocmd.HandleFlag("Local.Show", func(gcmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		return cmd.ShowLocalConfig()
 	})
-	gocmd.HandleFlag("Local.SetContest", func(gcmd *gocmd.Cmd, args []string) error {
+	_, _ = gocmd.HandleFlag("Local.SetContest", func(gcmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		return cmd.ChooseContest(flags.Local.SetContest.ContestId)
 	})
 
-	gocmd.HandleFlag("Local.Parse", func(gcmd *gocmd.Cmd, args []string) error {
+	_, _ = gocmd.HandleFlag("Local.Parse", func(gcmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		return cmd.ParseConfig()
 	})
-	gocmd.HandleFlag("Local.SetCompiler", func(cgmd *gocmd.Cmd, args []string) error {
+	_, _ = gocmd.HandleFlag("Local.SetCompiler", func(cgmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		return cmd.ChangeDefaultLang()
 	})
-	gocmd.HandleFlag("Login", func(gocmd *gocmd.Cmd, args []string) error {
+	_, _ = gocmd.HandleFlag("Login", func(gocmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		return client.Instance.EnterCredentials()
 	})
-	gocmd.HandleFlag("Submit", func(gcmd *gocmd.Cmd, args []string) error {
+	_, _ = gocmd.HandleFlag("Submit", func(gcmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		filename := ""
 		for _, v := range args[1:] {
@@ -99,7 +99,7 @@ func main() {
 		return nil
 	})
 
-	gocmd.New(gocmd.Options{
+	_, _ = gocmd.New(gocmd.Options{
 		Name:        "tscli",
 		Description: "TSWeb CLI client",
 		Version:     fmt.Sprintf("%v (%v)", "0.0.1", "initial"),
