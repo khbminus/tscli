@@ -18,7 +18,7 @@ func SubmitAndWatch(problem config.Problem, compiler config.Compiler, solution s
 		return err
 	}
 
-	cfg, err := config.NewConfig(ConfigPath)
+	cfg, err := GetConfig()
 	submits, err := client.Instance.GetAllSubmits(*cfg)
 	nowId := submits[0].ID
 	if err != nil {
@@ -52,6 +52,7 @@ func SubmitAndWatch(problem config.Problem, compiler config.Compiler, solution s
 		table := tablewriter.NewWriter(os.Stdout)
 		table.SetHeader([]string{"#", "Time used", "Memory used", "Status", "Comment"})
 		table.SetAutoWrapText(false)
+		table.SetAlignment(tablewriter.ALIGN_CENTER)
 		for _, test := range feedback {
 			var status string
 			switch test.Result {

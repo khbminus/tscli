@@ -1,23 +1,48 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/khbminus/tscli/client"
 	"github.com/khbminus/tscli/config"
 	"github.com/khbminus/tscli/util"
 	"github.com/logrusorgru/aurora/v3"
+	"github.com/olekukonko/tablewriter"
+	"os"
+	"path"
+	"strconv"
 )
 
 const (
-	ConfigPath = "./.tscli.local"
+	ConfigName = ".tscli.local"
 )
 
+func GetConfig() (*config.Config, error) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	for {
+		if cwd == "/" || cwd == "" {
+			fmt.Println(aurora.Red("Can't find a local config. Please run tscli local parse"))
+			return nil, errors.New("no config found")
+		}
+		if _, err := os.Stat(cwd + "/" + ConfigName); err == nil {
+			return config.NewConfig(cwd + "/" + ConfigName)
+		} else if os.IsNotExist(err) {
+			cwd = path.Dir(cwd)
+		} else {
+			panic(err)
+		}
+	}
+}
+
 func ShowLocalConfig() error {
-	cfg, err := config.NewConfig(ConfigPath)
+	cfg, err := GetConfig()
 	if err != nil {
 		return err
 	}
-	var compilerName string = "Doesn't set"
+	compilerName := "Doesn't set"
 	if cfg.Compilers != nil && cfg.DefaultLang != -1 {
 		compilerName = cfg.Compilers[cfg.DefaultLang].CompilerName
 	}
@@ -43,7 +68,7 @@ func ShowLocalConfig() error {
 
 func ParseConfig() error {
 	fmt.Println(aurora.Yellow("Getting new config..."))
-	cfg, err := client.Instance.GetConfig(ConfigPath)
+	cfg, err := client.Instance.GetConfig("./" + ConfigName)
 	if err != nil {
 		return err
 	}
@@ -64,9 +89,14 @@ func ChooseContest(contestId string) error {
 	}
 	index := -1
 	if contestId == "" {
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"index", "Id", "Name", "Started", "Status"})
+		table.SetAutoWrapText(false)
+		table.SetAlignment(tablewriter.ALIGN_CENTER)
 		for i, v := range contests {
-			fmt.Printf("%v) %v\n", i, v)
+			table.Append([]string{strconv.Itoa(i), v.ContestId, v.ContestName, v.ContestStarted, v.ContestStatus})
 		}
+		table.Render()
 		index = util.ChooseIndex(len(contests))
 	} else {
 		for i, contest := range contests {
@@ -94,7 +124,7 @@ func ChooseContest(contestId string) error {
 }
 
 func ChangeDefaultLang() error {
-	cfg, err := config.NewConfig(ConfigPath)
+	cfg, err := GetConfig()
 	if err != nil {
 		return err
 	}

@@ -5,7 +5,6 @@ import (
 	"github.com/devfacet/gocmd/v3"
 	"github.com/khbminus/tscli/client"
 	"github.com/khbminus/tscli/cmd"
-	"github.com/khbminus/tscli/config"
 	"github.com/logrusorgru/aurora/v3"
 	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
@@ -43,6 +42,11 @@ func main() {
 		client.Init(ClientPath)
 		return cmd.ChooseContest(flags.Local.SetContest.ContestId)
 	})
+
+	gocmd.HandleFlag("Local.Parse", func(gcmd *gocmd.Cmd, args []string) error {
+		client.Init(ClientPath)
+		return cmd.ParseConfig()
+	})
 	gocmd.HandleFlag("Local.SetCompiler", func(cgmd *gocmd.Cmd, args []string) error {
 		client.Init(ClientPath)
 		return cmd.ChangeDefaultLang()
@@ -67,7 +71,7 @@ func main() {
 			fmt.Println(aurora.Red("Unknown filename"))
 			return nil
 		}
-		cfg, err := config.NewConfig(cmd.ConfigPath)
+		cfg, err := cmd.GetConfig()
 		if err != nil {
 			fmt.Println(aurora.Red("Error at config load"))
 			return err

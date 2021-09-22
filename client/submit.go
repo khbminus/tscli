@@ -15,23 +15,6 @@ import (
 	"strings"
 )
 
-type Submission struct {
-	ID       string
-	Problem  *config.Problem
-	Attempt  string
-	Time     string
-	Compiler *config.Compiler
-	Result   string
-}
-
-type Test struct {
-	ID         string
-	Result     string
-	TimeUsed   string
-	MemoryUsed string
-	Comment    string
-}
-
 var (
 	findSubmissionsRegex, _ = regexp.Compile("<(TR|tr) (CLASS|class)[\\d\\D]*?>([\\d\\D]+?)</(TR|tr)>")
 	findColumnsRegex, _     = regexp.Compile("<(TD|td)>([\\d\\D]+?)</(TD|td)>")

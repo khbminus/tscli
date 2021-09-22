@@ -109,13 +109,6 @@ func (c *Client) GetConfig(path string) (cfg *config.Config, err error) {
 	return
 }
 
-type Contest struct {
-	ContestId      string
-	ContestName    string
-	ContestStatus  string
-	ContestStarted string
-}
-
 func (c *Client) GetAvailableContests() (res []Contest, err error) {
 	body, err := util.GetBody(c.client, HOST+"/contests?mask=1")
 	if err != nil {

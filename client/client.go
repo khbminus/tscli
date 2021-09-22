@@ -11,14 +11,6 @@ import (
 	"path/filepath"
 )
 
-type Client struct {
-	Jar      *cookiejar.Jar `json:"cookies"`
-	User     string         `json:"login"`
-	Password string         `json:"password"`
-	client   *http.Client
-	path     string
-}
-
 var Instance *Client
 
 const (
