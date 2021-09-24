@@ -10,7 +10,7 @@ Use `go install github.com/khbminus/tscli` to install TScli into `$GOBIN` or `$G
 # Usage
 
 ```shell
-# => login into TSWeb account and save credentials to ~/.tscli.json
+# => login into TSWeb account and save credentials to ~/.tscli.global
 tscli login
 # Set contest for current local config (with dialog)
 tscli local set-contest
@@ -30,5 +30,5 @@ tscli submit -p 2A file.extension
 
 # Configuration
 
-TScli uses two configuration files: global - `$HOME/.tscli.json` with credentials and `.tscli.local` (search in parent
+TScli uses two configuration files: global - `$HOME/.tscli.global` with credentials and `.tscli.local` (search in parent
 directories is supported) with data specific to a contest. 

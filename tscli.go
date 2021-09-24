@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	ClientPath, _ = homedir.Expand("~/tscli.json")
+	ClientPath, _ = homedir.Expand("~/.tscli.global")
 )
 
 func main() {
