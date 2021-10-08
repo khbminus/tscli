@@ -2,8 +2,8 @@ package client
 
 import (
 	"github.com/khbminus/tscli/config"
+	"github.com/khbminus/tscli/cookiejar"
 	"net/http"
-	"net/http/cookiejar"
 )
 
 type Client struct {
