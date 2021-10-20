@@ -29,8 +29,9 @@ type Test struct {
 	Comment    string
 }
 type Contest struct {
-	ContestId      string
-	ContestName    string
-	ContestStatus  string
-	ContestStarted string
+	ContestId           string
+	ContestName         string
+	ContestStatus       string
+	ContestStarted      string
+	ContestStatementURL string
 }
