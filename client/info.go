@@ -5,6 +5,8 @@ import (
 	"github.com/khbminus/tscli/config"
 	"github.com/khbminus/tscli/util"
 	"github.com/logrusorgru/aurora/v3"
+	"os"
+	"path/filepath"
 	"regexp"
 )
 
@@ -134,4 +136,18 @@ func (c *Client) GetAvailableContests() (res []Contest, err error) {
 		})
 	}
 	return
+}
+
+func (c *Client) DownloadStatements(contest Contest, cfg *config.Config) error {
+	body, err := util.GetBinary(c.client, contest.ContestStatementURL)
+	if err != nil {
+		return err
+	}
+
+	if err := os.MkdirAll(filepath.Dir(cfg.Path), os.ModePerm); err != nil {
+		return err
+	}
+
+	return os.WriteFile(filepath.Dir(cfg.Path)+"/statements.pdf", body, 0644)
+
 }

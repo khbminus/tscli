@@ -58,6 +58,16 @@ func GetBody(c *http.Client, URL string) ([]byte, error) {
 	return decoder.Bytes(text)
 }
 
+func GetBinary(c *http.Client, URL string) ([]byte, error) {
+	resp, err := c.Get(URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	text, err := ioutil.ReadAll(resp.Body)
+	return text, err
+}
+
 func ChooseIndex(maxN int) (res int) {
 	fmt.Print(aurora.Cyan("Please choose one index: "))
 	for {
