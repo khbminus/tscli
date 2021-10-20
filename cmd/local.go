@@ -110,6 +110,10 @@ func ChooseContest(contestId string) error {
 		fmt.Println(aurora.Red("Can't find any suitable contest!"))
 		return nil
 	}
+	cfg, _ := GetConfig()
+	cfg.Contest = contests[index].ContestId
+	_ = cfg.Save()
+
 	err = client.Instance.ChangeContest(contests[index].ContestId)
 
 	if err != nil {

@@ -18,8 +18,10 @@ var (
 func main() {
 
 	flags := struct {
-		Help  bool `short:"h" long:"help" description:"Display Usage" global:"true"`
-		Local struct {
+		Help      bool `short:"h" long:"help" description:"Display Usage" global:"true"`
+		Version   bool `short:"v" long:"version" description:"Display version"`
+		VersionEx bool `long:"vv" description:"Display version (extended)"`
+		Local     struct {
 			Show       struct{} `command:"show" description:"Show local config"`
 			Parse      struct{} `command:"parse" description:"Parse config for current config"`
 			SetContest struct {
@@ -102,7 +104,7 @@ func main() {
 	_, _ = gocmd.New(gocmd.Options{
 		Name:        "tscli",
 		Description: "TSWeb CLI client",
-		Version:     fmt.Sprintf("%v (%v)", "0.0.1", "initial"),
+		Version:     fmt.Sprintf("%v (%v)", "v1.1.0", "Cookie Time!"),
 		Flags:       &flags,
 		ConfigType:  gocmd.ConfigTypeAuto,
 	})
