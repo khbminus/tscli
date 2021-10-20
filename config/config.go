@@ -14,14 +14,14 @@ type Config struct {
 	Contest     string     `json:"contest"`
 	Problems    []Problem  `json:"problems"`
 	Compilers   []Compiler `json:"compilers"`
-	path        string
+	Path        string
 }
 
 func NewConfig(path string) (c *Config, err error) {
 	c = &Config{
 		DefaultLang: -1,
 		Contest:     "",
-		path:        path,
+		Path:        path,
 	}
 	if err := c.load(); err != nil {
 		fmt.Println(Red(err.Error()))
@@ -37,7 +37,7 @@ func NewConfig(path string) (c *Config, err error) {
 }
 
 func (c *Config) load() (err error) {
-	file, err := os.Open(c.path)
+	file, err := os.Open(c.Path)
 	if err != nil {
 		return err
 	}
@@ -55,9 +55,9 @@ func (c *Config) Save() (err error) {
 		return err
 	}
 
-	if err := os.MkdirAll(filepath.Dir(c.path), os.ModePerm); err != nil {
+	if err := os.MkdirAll(filepath.Dir(c.Path), os.ModePerm); err != nil {
 		return err
 	}
-	err = os.WriteFile(c.path, data, 0644)
+	err = os.WriteFile(c.Path, data, 0644)
 	return err
 }

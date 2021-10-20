@@ -111,7 +111,17 @@ func ChooseContest(contestId string) error {
 		return nil
 	}
 	cfg, _ := GetConfig()
+	if cfg == nil {
+		cfg, err = config.NewConfig("./" + ConfigName)
+		if err != nil {
+			return err
+		}
+	}
 	cfg.Contest = contests[index].ContestId
+	err = client.Instance.DownloadStatements(contests[index], cfg)
+	if err != nil {
+		return err
+	}
 	_ = cfg.Save()
 
 	err = client.Instance.ChangeContest(contests[index].ContestId)

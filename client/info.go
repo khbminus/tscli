@@ -5,6 +5,8 @@ import (
 	"github.com/khbminus/tscli/config"
 	"github.com/khbminus/tscli/util"
 	"github.com/logrusorgru/aurora/v3"
+	"os"
+	"path/filepath"
 	"regexp"
 )
 
@@ -19,6 +21,7 @@ var (
 	findTableRowRegex, _      = regexp.Compile("<tr>([\\d\\D]+?)</tr>")
 	findTableColumnRegex, _   = regexp.Compile("<td>([\\d\\D]+?)</td>")
 	removeAnchorRegex, _      = regexp.Compile("<a([\\d\\D]*?)>([\\d\\D]+?)<")
+	getLinkRegex, _           = regexp.Compile("href=\"([\\d\\D]*?)\"")
 )
 
 func (c *Client) FindLogin() (string, error) {
@@ -125,11 +128,26 @@ func (c *Client) GetAvailableContests() (res []Contest, err error) {
 	for _, row := range rows {
 		columns := findTableColumnRegex.FindAllStringSubmatch(string(row[1]), -1)
 		res = append(res, Contest{
-			ContestId:      removeAnchorRegex.FindStringSubmatch(columns[0][0])[2],
-			ContestName:    removeAnchorRegex.FindStringSubmatch(columns[1][0])[2],
-			ContestStarted: columns[3][1],
-			ContestStatus:  columns[2][1],
+			ContestId:           removeAnchorRegex.FindStringSubmatch(columns[0][0])[2],
+			ContestStatementURL: getLinkRegex.FindStringSubmatch(removeAnchorRegex.FindStringSubmatch(columns[1][0])[1])[1],
+			ContestName:         removeAnchorRegex.FindStringSubmatch(columns[1][0])[2],
+			ContestStarted:      columns[3][1],
+			ContestStatus:       columns[2][1],
 		})
 	}
 	return
+}
+
+func (c *Client) DownloadStatements(contest Contest, cfg *config.Config) error {
+	body, err := util.GetBinary(c.client, contest.ContestStatementURL)
+	if err != nil {
+		return err
+	}
+
+	if err := os.MkdirAll(filepath.Dir(cfg.Path), os.ModePerm); err != nil {
+		return err
+	}
+
+	return os.WriteFile(filepath.Dir(cfg.Path)+"/statements.pdf", body, 0644)
+
 }
