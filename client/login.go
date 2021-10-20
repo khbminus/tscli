@@ -3,10 +3,10 @@ package client
 import (
 	"errors"
 	"fmt"
+	"github.com/khbminus/tscli/cookiejar"
 	"github.com/khbminus/tscli/util"
 	. "github.com/logrusorgru/aurora/v3"
 	"golang.org/x/crypto/ssh/terminal"
-	"net/http/cookiejar"
 	"net/url"
 	"syscall"
 )

@@ -3,10 +3,10 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/khbminus/tscli/cookiejar"
 	. "github.com/logrusorgru/aurora/v3"
 	"io/ioutil"
 	"net/http"
-	"net/http/cookiejar"
 	"os"
 	"path/filepath"
 )
@@ -28,15 +28,17 @@ func Init(path string) {
 	if err := c.load(); err != nil {
 		fmt.Println(Red(err.Error()))
 		fmt.Println(Green(fmt.Sprintf("Creating a new client config at %v", path)))
+		c.client = &http.Client{Jar: jar}
+	} else {
+		c.client = &http.Client{Jar: c.Jar}
 	}
-	c.client = &http.Client{Jar: jar}
 
 	if err := c.save(); err != nil {
 		fmt.Println(Red("Error while saving!"))
 		fmt.Println(Red(err.Error()))
 	}
 	Instance = c
-	if res, err := c.FindLogin(); res == "" || err == nil {
+	if res, err := c.FindLogin(); err != nil || res == "" {
 		fmt.Println(Magenta("Not logged..."))
 		if err := c.Login(); err != nil {
 			return

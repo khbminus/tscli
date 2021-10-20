@@ -83,6 +83,13 @@ func (c *Client) GetCompilers() (res []config.Compiler, err error) {
 }
 func (c *Client) GetConfig(path string) (cfg *config.Config, err error) {
 	cfg, err = config.NewConfig(path)
+	if cfg.Contest != "" {
+		err := c.ChangeContest(cfg.Contest)
+		if err != nil {
+			fmt.Println(aurora.Red("Can't change contest"))
+			return nil, err
+		}
+	}
 	if err != nil {
 		return
 	}
