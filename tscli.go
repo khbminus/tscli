@@ -104,7 +104,7 @@ func main() {
 	_, _ = gocmd.New(gocmd.Options{
 		Name:        "tscli",
 		Description: "TSWeb CLI client",
-		Version:     fmt.Sprintf("%v (%v)", "v1.1.0", "Cookie Time!"),
+		Version:     fmt.Sprintf("%v (%v)", "v1.2.0", "Statements are here!"),
 		Flags:       &flags,
 		ConfigType:  gocmd.ConfigTypeAuto,
 	})

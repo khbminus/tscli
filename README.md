@@ -12,7 +12,7 @@ Use `go install github.com/khbminus/tscli` to install TScli into `$GOBIN` or `$G
 ```shell
 # => login into TSWeb account and save credentials to ~/.tscli.global
 tscli login
-# Set contest for current local config (with dialog)
+# Set contest (and download statements) for current local config (with dialog)
 tscli local set-contest
 # Set contest for current local config (with specific id)
 tscli local set-contest --id="id"
